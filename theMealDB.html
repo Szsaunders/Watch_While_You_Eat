@@ -15,8 +15,9 @@
     <!-- <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="lodash.js"></script>
         <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-        <title>Watch While You Cook</title>
+        <title>Watch What You Eat</title>
     </head>
     
     <body>
@@ -102,22 +103,13 @@
             
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="lodash.js"></script>
         <script type="text/javascript">
             //Setting up some variables. Not sure if they need to be global, but it shouldn't hurt the script
             var categoryC = "";
             var categoryI = "";
             var categoryA = "";
             var categoryN = "";
-            
-            //function I dug up to help with handling filtering
-            function counter(array, element) {
-                var count = 0;
-                for(var i = 0; i < array.length; ++i){
-                    if(array[i] == element)
-                    count++;
-                }
-                return count
-            }
             
             //The function that runs when you submit a search
             $("#submit").on("click", function(){
@@ -161,8 +153,9 @@
                                             //Pushes the meal into the array
                                             tempArray.push(value.strMeal)
                                             //checks to see how many copies of that meal are in the array
-                                            var countNumber = counter(tempArray, value.strMeal)
-                                            console.log(countNumber);
+                                            // var countNumber = counter(tempArray, value.strMeal)
+                                            var countNumber = _.filter(tempArray, function(o){return o == value.strMeal}).length
+                                            console.log(tempArray, countNumber);
                                             //If the number of copies of that meal are equal to the number of GET methods run, then it suits all checked categories, and the meal is submitted to the table
                                             if (countNumber == categoryArray.length){
                                                 var tr = $("<tr>")
