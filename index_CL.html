@@ -104,7 +104,7 @@
             </div>
             <button type="button" class="btn btn-primary" id="btn-search">Search</button>
             
-            <button type="button" class="btn btn-primary" id="btn-search" data-toggle="modal" data-target=".bd-example-modal-lg">Search</button>
+            <button type="button" class="btn btn-primary" id="btn-search" data-toggle="modal" data-target=".bd-example-modal-lg">Modal Test Button</button>
         </form>
         
         <div class="row">
@@ -238,15 +238,9 @@
                                         var countNumber = _.filter(tempArray, function(o){return o == value.strMeal}).length
                                         console.log(tempArray, countNumber);
                                         //If the number of copies of that meal are equal to the number of GET methods run, then it suits all checked categories, and the meal is submitted to the table
-                                        if (countNumber == categoryArray.length){
-                                            
-                                            
+                                        if (countNumber == categoryArray.length){   
                                             var newRow = $("<tr>").append($("<td>").html($("<button>").text(value.strMeal).attr("data-toggle", "modal").attr("data-target", ".bd-example-modal-lg").attr("id", value.idMeal).addClass("btn-recipe")));
                                                             $("#results-body").append(newRow)
-            
-                                                        }
-                                                        else {
-                                                            
                                                         }
                                                     });
                                                 });
@@ -317,8 +311,6 @@
                                                                         for (var i = 0; i < ingArray.length; i++){
                                                                             $(div).append("<br>" + ingArray[i] + ": " + meaArray[i])
                                                                         }
-                                                                        console.log("Still working!")
-                                                                        console.log(img, div)
                                                                         $("#recipe-display").append(img).append(div).append(btn)
                                                                     })
                                                                     
