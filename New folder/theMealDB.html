@@ -105,11 +105,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="lodash.js"></script>
         <script type="text/javascript">
+            
+            
+            //firebase stuff, natch
+            var config = {
+                apiKey: "AIzaSyDxF1JpYtm5tmGqUsNWIJdFhiPQi7_NFIc",
+                authDomain: "projectone-b29b1.firebaseapp.com",
+                databaseURL: "https://projectone-b29b1.firebaseio.com",
+                storageBucket: "projectone-b29b1.appspot.com",
+            };
+            firebase.initializeApp(config);
+            
+            var database = firebase.database();
+
             //Setting up some variables. Not sure if they need to be global, but it shouldn't hurt the script
             var categoryC = "";
             var categoryI = "";
             var categoryA = "";
             var categoryN = "";
+
+            var pushMeal = "";
+            var pushID = "";
+            var pushCat = "";
+            var pushArea = "";
+
+
             
             //The function that runs when you submit a search
             $("#submit").on("click", function(){
@@ -176,55 +196,97 @@
                                             //Promise.all - give it an array of requests
                                             ;
                                         })
-
-                        $(document).on("click", ".recipeLink", function(){
-                            event.preventDefault();
-                            console.log("recipe clicker's working, bruh")
-                            recipeID = $(this).attr("id");
-                            queryUrl = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + recipeID;
-                            $.ajax({
-                                        url: queryUrl,
-                                        method: "GET"
-                                    }).then(function(response) {
-                                    var img = $("<img>");
-                                    var div = $("<div>");
-                                    var formatter = response.meals[0].strInstructions.split('\r\n');
-                                    console.log(formatter)
-                                    for (i = 0; i < formatter.length; i++) {
-                                        var p = $("<p>");
-                                        $(p).text(formatter[i]);
-                                        console.log(p)
-                                        $(div).append(p);}
-
-                                    $(img).attr("src", response.meals[0].strMealThumb).addClass("img-responsive");
-                                    var ingArray = [];
-                                    var meaArray = [];
-                                
-
-                                    Object.keys(response.meals[0]).forEach(function(key) {
-                                    if (key.startsWith("strIngre")){
-                                        if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
-                                            ingArray.push(response.meals[0][key])
-                                    }}
-                                });
-
-                                     Object.keys(response.meals[0]).forEach(function(key) {
-                                    if (key.startsWith("strMeas")){
-                                        if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
-                                            meaArray.push(response.meals[0][key])
-                                    }}
-                                });
-
-                                    for (var i = 0; i < ingArray.length; i++){
-                                        $(div).append("<br>" + ingArray[i] + ": " + meaArray[i])
-                                    }
-                                    console.log("Still working!")
-                                    console.log(img, div)
-                                    $("#test-div").append(img).append(div)
-                                    })
-
-                        })
                                         
-                                    </script>
-                                </body>
-                                </html>
+                                        
+                                        
+                                        //Handles the creation of a recipe from clicking on a search result.
+                                        $(document).on("click", ".recipeLink", function(){
+                                            event.preventDefault();
+                                            console.log("recipe clicker's working, bruh")
+                                            //retrieves recipe ID from search result
+                                            var recipeID = $(this).attr("id");
+                                            //creates query URL
+                                            var queryUrl = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + recipeID;
+                                            //runs ajax
+                                            $.ajax({
+                                                url: queryUrl,
+                                                method: "GET"
+                                            }).then(function(response) {
+                                                //creates temp HTML elements
+                                                var img = $("<img>");
+                                                var div = $("<div>");
+                                                    $(div).html("<h3>" + response.meals[0].strMeal + "</h3>")
+                                                    var formatter = response.meals[0].strInstructions.split('\r\n');
+                                                    console.log(formatter)
+                                                    for (i = 0; i < formatter.length; i++) {
+                                                        var p = $("<p>");
+                                                            $(p).text(formatter[i]);
+                                                            console.log(p)
+                                                            $(div).append(p);}
+                                                            
+                                                            var btn = $("<button>");
+                                                                $(btn).addClass("btn btn-primary save").attr("id", recipeID).text("Save Recipe")
+                                                                
+                                                                $(img).attr("src", response.meals[0].strMealThumb).addClass("img-responsive")
+                                                                var ingArray = [];
+                                                                var meaArray = [];
+                                                                
+                                                                //searches response for ingredients and associated measures, and stores them in arrays
+                                                                Object.keys(response.meals[0]).forEach(function(key) {
+                                                                    if (key.startsWith("strIngre")){
+                                                                        if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
+                                                                            ingArray.push(response.meals[0][key])
+                                                                        }}
+                                                                    });
+                                                                    
+                                                                    Object.keys(response.meals[0]).forEach(function(key) {
+                                                                        if (key.startsWith("strMeas")){
+                                                                            if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
+                                                                                meaArray.push(response.meals[0][key])
+                                                                            }}
+                                                                        });
+                                                                        //sticks those ingredients and measures into a temporary element
+                                                                        for (var i = 0; i < ingArray.length; i++){
+                                                                            $(div).append("<br>" + ingArray[i] + ": " + meaArray[i])
+                                                                        }
+                                                                        console.log("Still working!")
+                                                                        console.log(img, div)
+                                                                        $("#test-div").append(img).append(div).append(btn)
+                                                                    })
+                                                                    
+                                                                });
+                                                                
+                                                                $(document).on("click", ".save", function(){
+                                                                    
+                                                                    event.preventDefault();
+                                                                    var recipeID = $(this).attr("id");
+                                                                    var queryUrl = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + recipeID;
+                                                                    //runs ajax
+                                                                    $.ajax({
+                                                                        url: queryUrl,
+                                                                        method: "GET"
+                                                                    }).then(function(response) {
+                                                                         pushID = recipeID;
+                                                                         pushMeal = response.meals[0].strMeal;
+                                                                         pushCat = response.meals[0].strCategory;
+                                                                         pushArea = response.meals[0].strArea;
+                                                                        
+                                                                        
+                                                                        var newMeal = {
+                                                                            dish: pushMeal,
+                                                                            ID: pushID,
+                                                                            category: pushCat,
+                                                                            region: pushArea
+                                                                        }
+                                                                        console.log(newMeal)
+                                                                        console.log(database)
+                                                                        database.ref().push(newMeal);
+                                                                    })
+                                                                    
+                                                                    
+                                                                })
+                                                                
+                                                                
+                                                            </script>
+                                                        </body>
+                                                        </html>
