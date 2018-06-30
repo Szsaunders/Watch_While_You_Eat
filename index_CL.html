@@ -241,7 +241,7 @@
                                         if (countNumber == categoryArray.length){
                                             
                                             
-                                            var newRow = $("<tr>").append($("<td>").text(value.strMeal).attr("id", value.idMeal).addClass("recipeLink"))
+                                            var newRow = $("<tr>").append($("<td>").html($("<button>").text(value.strMeal).attr("data-toggle", "modal").attr("data-target", ".bd-example-modal-lg").attr("id", value.idMeal).addClass("btn-recipe")));
                                                             $("#results-body").append(newRow)
             
                                                         }
@@ -267,7 +267,7 @@
                                         });
 
                                          //Handles the creation of a recipe from clicking on a search result.
-                                         $(document).on("click", ".recipeLink", function(){
+                                         $(document).on("click", ".btn-recipe", function(){
                                             event.preventDefault();
                                             console.log("recipe clicker's working, bruh")
                                             //retrieves recipe ID from search result
