@@ -351,15 +351,19 @@
                                                         
                                                         //searches response for ingredients and associated measures, and stores them in arrays
                                                         Object.keys(response.meals[0]).forEach(function(key) {
-                                                            if (key.startsWith("strIngre")){
-                                                                if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
+                                                            if (!response.meals[0][key]) {}
+                                                            else if (key.startsWith("strIngre")){
+                                                                console.log(response.meals[0][key]);
+                                                                if (response.meals[0][key].length > 0) {
                                                                     ingArray.push(response.meals[0][key])
+                                                                    console.log(response.meals[0][key])
                                                                 }}
                                                             });
                                                             
                                                             Object.keys(response.meals[0]).forEach(function(key) {
-                                                                if (key.startsWith("strMeas")){
-                                                                    if (response.meals[0][key] != "" || response.meals[0][key] [i] != null) {
+                                                                if (!response.meals[0][key]) {}
+                                                                else if (key.startsWith("strMeas")){
+                                                                    if (response.meals[0][key].length > 0) {
                                                                         meaArray.push(response.meals[0][key])
                                                                     }}
                                                                 });
