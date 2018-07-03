@@ -74,7 +74,7 @@ body {
     border: #f8f0dc;
 }
 
-#btn-search    {
+#btn-search, #btn-recipe, .save    {
     margin: 40px;
     padding: 20px;
     border-radius: 60%;
@@ -115,6 +115,20 @@ body {
     text-align: left;
     color: #311e01;
     background: #f8f8dc;    
+}
+
+#recipe-display{
+    font-size: 150%;
+    align-items: center
+}
+
+.recipe-p {
+    margin: 5px 20%; 
+    background: #f7f7ce
+}
+
+.recipe-i {
+    background: #f7f7ce
 }
 
 iframe  {
